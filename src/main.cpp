@@ -19,7 +19,10 @@ void setup() {
     digitalWrite(YELLOW,0);
 }
 
-void loop() {
+void loop()
+{
+    ledcWrite(0, (map(analogRead(LDR),2000,4000,0,255)));
+
     debouncer.update();
     if ( debouncer.fell() ) { 
         cnt++;
@@ -65,5 +68,4 @@ void loop() {
         digitalWrite(YELLOW,0);
         cnt = 0;
     }
-
 }

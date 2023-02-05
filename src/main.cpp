@@ -10,10 +10,6 @@ void setup()
 }
 void loop()
 {
-  while(1)
-  {
-    ledcWrite(0, Serial.println(map(analogRead(LDR),0,4095,0,255)));
-    //delay(5);
-  }
-
+  ledcWrite(0, (map(analogRead(LDR),2000,4000,0,255)));
+ 
 }

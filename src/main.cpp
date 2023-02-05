@@ -17,55 +17,27 @@ void setup() {
     digitalWrite(RED,0);
     pinMode(YELLOW, OUTPUT);
     digitalWrite(YELLOW,0);
+
+    ledcSetup(0, 5000, 8);
+    ledcSetup(1, 5000, 8);
+    ledcSetup(2, 5000, 8);
+    ledcAttachPin(GREEN, 0);
+    ledcAttachPin(YELLOW, 1);
+    ledcAttachPin(RED, 2);
 }
 
 void loop()
 {
-    ledcWrite(0, (map(analogRead(LDR),2000,4000,0,255)));
-
-    debouncer.update();
-    if ( debouncer.fell() ) { 
-        cnt++;
-    }
-    if (cnt == 1){
-        digitalWrite(GREEN,1);
-        digitalWrite(RED,0);
-        digitalWrite(YELLOW,0);
-    }
-    if (cnt == 2){
-        digitalWrite(GREEN,0);
-        digitalWrite(RED,0);
-        digitalWrite(YELLOW,1);
-    }
-    if (cnt == 3){
-        digitalWrite(GREEN,1);
-        digitalWrite(RED,0);
-        digitalWrite(YELLOW,1);
-    }
-    if (cnt == 4){
-        digitalWrite(GREEN,0);
-        digitalWrite(RED,1);
-        digitalWrite(YELLOW,0);
-    }
-    if (cnt == 5){
-        digitalWrite(GREEN,1);
-        digitalWrite(RED,1);
-        digitalWrite(YELLOW,0);
-    }
-    if (cnt == 6){
-        digitalWrite(GREEN,0);
-        digitalWrite(RED,1);
-        digitalWrite(YELLOW,1);
-    }
-    if (cnt == 7){
-        digitalWrite(GREEN,1);
-        digitalWrite(RED,1);
-        digitalWrite(YELLOW,1);
-    }
-    if (cnt == 8){
-        digitalWrite(GREEN,0);
-        digitalWrite(RED,0);
-        digitalWrite(YELLOW,0);
-        cnt = 0;
-    }
+  debouncer.update();
+  if ( debouncer.fell() ) { 
+      cnt++;
+      cnt = cnt%8;
+  }
+  int num = cnt;
+  for(int i=0; i<3; i++)
+  {
+    int a=num%2;
+    ledcWrite(i, a*(map(analogRead(LDR),2000,4000,0,255)));
+    num = num/2;
+  }
 }
